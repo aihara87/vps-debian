@@ -13,8 +13,21 @@ cd
 echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6
 sed -i '$ i\echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' /etc/rc.local
 
+# install htop
+apt-get install htop -y
+
+# add repository webmin
+echo "deb http://download.webmin.com/download/repository sarge contrib" >> /etc/apt/sources.list
+wget http://www.webmin.com/jcameron-key.asc
+apt-key add jcameron-key.asc -y
+
 # install wget and curl
 apt-get update;apt-get -y install wget curl;
+
+# install webmin
+apt-get install perl libnet-ssleay-perl openssl libauthen-pam-perl libpam-runtime libio-pty-perl apt-show-versions python -y
+apt-get install apt-transport-https -y
+apt-get install webmin -y
 
 # set time GMT +7
 ln -fs /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
@@ -48,16 +61,16 @@ service vnstat restart
 
 # install screenfetch
 cd
-wget 'https://raw.github.com/cyber4rt/installer/master/screeftech-dev'
+wget 'https://raw.githubusercontent.com/aihara87/vps-debian/master/screeftech-dev'
 mv screeftech-dev /usr/bin/screenfetch
 chmod +x /usr/bin/screenfetch
 echo "clear" >> .profile
 echo "screenfetch" >> .profile
 
 # install badvpn
-wget -O /usr/bin/badvpn-udpgw "https://raw.github.com/cyber4rt/installer/master/badvpn-udpgw"
+wget -O /usr/bin/badvpn-udpgw "https://raw.githubusercontent.com/aihara87/vps-debian/master/badvpn-udpgw"
 if [ "$OS" == "x86_64" ]; then
-  wget -O /usr/bin/badvpn-udpgw "https://raw.github.com/cyber4rt/installer/master/badvpn-udpgw64"
+  wget -O /usr/bin/badvpn-udpgw "https://raw.githubusercontent.com/aihara87/vps-debian/master/badvpn-udpgw64"
 fi
 sed -i '$ i\screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300' /etc/rc.local
 chmod +x /usr/bin/badvpn-udpgw
@@ -78,20 +91,21 @@ apt-get -y install fail2ban;service fail2ban restart
 
 # install squid3
 apt-get -y install squid3
-wget -O /etc/squid3/squid.conf "https://raw.github.com/cyber4rt/installer/master/squid3.conf"
+wget -O /etc/squid3/squid.conf "https://raw.githubusercontent.com/aihara87/vps-debian/master/squid3.conf"
 sed -i $MYIP2 /etc/squid3/squid.conf;
 service squid3 restart
 
 # download script
 cd
-wget -O speedtest_cli.py "https://raw.github.com/cyber4rt/installer/master/speedtest_cli.py"
-wget -O bench-network.sh "https://raw.github.com/cyber4rt/installer/master/bench-network.sh"
-wget -O ps_mem.py "https://raw.github.com/cyber4rt/installer/master/ps_mem.py"
-wget -O limit.sh "https://raw.github.com/cyber4rt/installer/master/limit.sh"
-wget -O dropmon "https://raw.github.com/cyber4rt/installer/master/dropmon"
-wget -O userlogin.sh "https://raw.github.com/cyber4rt/installer/master/userlogin.sh"
-wget -O userexpired.sh "https://raw.github.com/cyber4rt/installer/master/userexpired.sh"
-wget -O userlimit.sh "https://raw.github.com/cyber4rt/installer/master/userlimit.sh"
+wget -O speedtest_cli.py "https://raw.githubusercontent.com/aihara87/vps-debian/master/speedtest_cli.py"
+wget -O bench-network.sh "https://raw.githubusercontent.com/aihara87/vps-debian/master/bench-network.sh"
+wget -O ps_mem.py "https://raw.githubusercontent.com/aihara87/vps-debian/master/ps_mem.py"
+wget -O limit.sh "https://raw.githubusercontent.com/aihara87/vps-debian/master/limit.sh"
+wget -O dropmon "https://raw.githubusercontent.com/aihara87/vps-debian/master/dropmon"
+wget -O userlogin.sh "https://raw.githubusercontent.com/aihara87/vps-debian/master/userlogin.sh"
+wget -O userexpired.sh "https://raw.githubusercontent.com/aihara87/vps-debian/master/userexpired.sh"
+wget -O userlimit.sh "https://raw.githubusercontent.com/aihara87/vps-debian/master/userlimit.sh"
+wget -O tendang "https://raw.githubusercontent.com/aihara87/vps-debian/master/tendang"
 echo "0 0 * * * root /root/userexpired.sh" > /etc/cron.d/userexpired
 echo "0 0 * * * root sleep 5 /root/userexpired.sh" > /etc/cron.d/userexpired
 echo "0 0 * * * root sleep 10 /root/userexpired.sh" > /etc/cron.d/userexpired
@@ -125,6 +139,7 @@ chmod +x userexpired.sh
 chmod +x userlimit.sh
 chmod +x limit.sh
 chmod +x dropmon
+chmod +x tendang
 
 # finishing
 service vnstat restart
