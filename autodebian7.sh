@@ -50,7 +50,7 @@ apt-get update; apt-get -y upgrade;
 
 # disable exim
 service exim4 stop
-sysv-rc-conf exim4 off
+chkconfig exim4 off
 
 # update apt-file
 apt-file update
