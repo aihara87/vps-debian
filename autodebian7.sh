@@ -16,6 +16,9 @@ sed -i '$ i\echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' /etc/rc.local
 # install htop
 apt-get install htop -y
 
+# install chkconfig
+apt-get install chkconfig -y
+
 # add repository webmin
 echo "deb http://download.webmin.com/download/repository sarge contrib" >> /etc/apt/sources.list
 wget http://www.webmin.com/jcameron-key.asc
@@ -80,11 +83,12 @@ screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300
 apt-get -y install dropbear
 sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
 sed -i 's/DROPBEAR_PORT=22/DROPBEAR_PORT=443/g' /etc/default/dropbear
-sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS="-p 109 -p 110 -p 80"/g' /etc/default/dropbear
+sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS="-p 80"/g' /etc/default/dropbear
 echo "/bin/false" >> /etc/shells
 echo "/usr/sbin/nologin" >> /etc/shells
 service ssh restart
 service dropbear restart
+chkconfig dropbear on
 
 # install fail2ban
 apt-get -y install fail2ban;service fail2ban restart
