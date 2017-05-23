@@ -19,11 +19,6 @@ apt-get install htop -y
 # install chkconfig
 apt-get install chkconfig -y
 
-# add repository webmin
-echo "deb http://download.webmin.com/download/repository sarge contrib" >> /etc/apt/sources.list
-wget http://www.webmin.com/jcameron-key.asc
-apt-key add jcameron-key.asc -y
-
 # install wget and curl
 apt-get update;apt-get -y install wget curl;
 
@@ -51,16 +46,6 @@ apt-get update; apt-get -y upgrade;
 # disable exim
 service exim4 stop
 chkconfig exim4 off
-
-# update apt-file
-apt-file update
-
-# install vnstat
-apt-get install vnstat -y
-
-# setting vnstat
-vnstat -u -i venet0
-service vnstat restart
 
 # install screenfetch
 cd
@@ -93,113 +78,9 @@ chkconfig dropbear on
 # install fail2ban
 apt-get -y install fail2ban;service fail2ban restart
 
-# install squid3
-apt-get -y install squid3
-wget -O /etc/squid3/squid.conf "https://raw.githubusercontent.com/aihara87/vps-debian/master/squid3.conf"
-sed -i $MYIP2 /etc/squid3/squid.conf;
-service squid3 restart
-
-# download script
-cd
-wget -O speedtest_cli.py "https://raw.githubusercontent.com/aihara87/vps-debian/master/speedtest_cli.py"
-wget -O bench-network.sh "https://raw.githubusercontent.com/aihara87/vps-debian/master/bench-network.sh"
-wget -O ps_mem.py "https://raw.githubusercontent.com/aihara87/vps-debian/master/ps_mem.py"
-wget -O limit.sh "https://raw.githubusercontent.com/aihara87/vps-debian/master/limit.sh"
-wget -O dropmon "https://raw.githubusercontent.com/aihara87/vps-debian/master/dropmon"
-wget -O userlogin.sh "https://raw.githubusercontent.com/aihara87/vps-debian/master/userlogin.sh"
-wget -O userexpired.sh "https://raw.githubusercontent.com/aihara87/vps-debian/master/userexpired.sh"
-wget -O userlimit.sh "https://raw.githubusercontent.com/aihara87/vps-debian/master/userlimit.sh"
-wget -O tendang "https://raw.githubusercontent.com/aihara87/vps-debian/master/tendang"
-echo "0 0 * * * root /root/userexpired.sh" > /etc/cron.d/userexpired
-echo "0 0 * * * root sleep 5 /root/userexpired.sh" > /etc/cron.d/userexpired
-echo "0 0 * * * root sleep 10 /root/userexpired.sh" > /etc/cron.d/userexpired
-echo "0 0 * * * root sleep 15 /root/userexpired.sh" > /etc/cron.d/userexpired
-echo "0 0 * * * root sleep 20 /root/userexpired.sh" > /etc/cron.d/userexpired
-echo "0 0 * * * root sleep 25 /root/userexpired.sh" > /etc/cron.d/userexpired
-echo "0 0 * * * root sleep 30 /root/userexpired.sh" > /etc/cron.d/userexpired
-echo "0 0 * * * root sleep 35 /root/userexpired.sh" > /etc/cron.d/userexpired
-echo "0 0 * * * root sleep 40 /root/userexpired.sh" > /etc/cron.d/userexpired
-echo "0 0 * * * root sleep 45 /root/userexpired.sh" > /etc/cron.d/userexpired
-echo "0 0 * * * root sleep 50 /root/userexpired.sh" > /etc/cron.d/userexpired
-echo "0 0 * * * root sleep 55 /root/userexpired.sh" > /etc/cron.d/userexpired
-echo "0 0 * * * root /root/userlimit.sh" > /etc/cron.d/userlimit
-echo "0 0 * * * root sleep 5 /root/userlimit.sh" > /etc/cron.d/userlimit
-echo "0 0 * * * root sleep 10 /root/userlimit.sh" > /etc/cron.d/userlimit
-echo "0 0 * * * root sleep 15 /root/userlimit.sh" > /etc/cron.d/userlimit
-echo "0 0 * * * root sleep 20 /root/userlimit.sh" > /etc/cron.d/userlimit
-echo "0 0 * * * root sleep 25 /root/userlimit.sh" > /etc/cron.d/userlimit
-echo "0 0 * * * root sleep 30 /root/userlimit.sh" > /etc/cron.d/userlimit
-echo "0 0 * * * root sleep 35 /root/userlimit.sh" > /etc/cron.d/userlimit
-echo "0 0 * * * root sleep 40 /root/userlimit.sh" > /etc/cron.d/userlimit
-echo "0 0 * * * root sleep 45 /root/userlimit.sh" > /etc/cron.d/userlimit
-echo "0 0 * * * root sleep 50 /root/userlimit.sh" > /etc/cron.d/userlimit
-echo "0 0 * * * root sleep 55 /root/userlimit.sh" > /etc/cron.d/userlimit
-sed -i '$ i\screen -AmdS limit /root/limit.sh' /etc/rc.local
-chmod +x bench-network.sh
-chmod +x speedtest_cli.py
-chmod +x ps_mem.py
-chmod +x userlogin.sh
-chmod +x userexpired.sh
-chmod +x userlimit.sh
-chmod +x limit.sh
-chmod +x dropmon
-chmod +x tendang
-
 # finishing
-service vnstat restart
 service ssh restart
 service dropbear restart
 service fail2ban restart
-service squid3 restart
 rm -rf ~/.bash_history && history -c
 echo "unset HISTFILE" >> /etc/profile
-
-# info
-clear
-echo ""  | tee -a log-install.txt
-echo "AUTOSCRIPT INCLUDES" | tee log-install.txt
-echo "===============================================" | tee -a log-install.txt
-echo ""  | tee -a log-install.txt
-echo "Service"  | tee -a log-install.txt
-echo "-------"  | tee -a log-install.txt
-echo "OpenVPN  : TCP 1194 (client config : http://$MYIP:81/client.tar)"  | tee -a log-install.txt
-echo "OpenSSH  : 22, 80, 143"  | tee -a log-install.txt
-echo "Dropbear : 109, 110, 443"  | tee -a log-install.txt
-echo "Squid3   : 8080 (limit to IP SSH)"  | tee -a log-install.txt
-echo "badvpn   : badvpn-udpgw port 7300"  | tee -a log-install.txt
-echo "nginx    : 81"  | tee -a log-install.txt
-echo ""  | tee -a log-install.txt
-echo "Tools"  | tee -a log-install.txt
-echo "-----"  | tee -a log-install.txt
-echo "axel"  | tee -a log-install.txt
-echo "bmon"  | tee -a log-install.txt
-echo "htop"  | tee -a log-install.txt
-echo "iftop"  | tee -a log-install.txt
-echo "mtr"  | tee -a log-install.txt
-echo "nethogs"  | tee -a log-install.txt
-echo ""  | tee -a log-install.txt
-echo "Script"  | tee -a log-install.txt
-echo "------"  | tee -a log-install.txt
-echo "screenfetch"  | tee -a log-install.txt
-echo "./ps_mem.py"  | tee -a log-install.txt
-echo "./speedtest_cli.py --share"  | tee -a log-install.txt
-echo "./bench-network.sh"  | tee -a log-install.txt
-echo "./user-login.sh" | tee -a log-install.txt
-echo "./user-expire.sh" | tee -a log-install.txt
-echo "./user-limit.sh 2" | tee -a log-install.txt
-echo "sh dropmon [port] contoh: ./dropmon.sh 443" | tee -a log-install.txt
-echo ""  | tee -a log-install.txt
-echo "Fitur lain"  | tee -a log-install.txt
-echo "----------"  | tee -a log-install.txt
-echo "Webmin   : https://$MYIP:10000/"  | tee -a log-install.txt
-echo "vnstat   : http://$MYIP:81/vnstat/"  | tee -a log-install.txt
-echo "MRTG     : http://$MYIP:81/mrtg/"  | tee -a log-install.txt
-echo "Timezone : Asia/Jakarta"  | tee -a log-install.txt
-echo "Fail2Ban : [on]"  | tee -a log-install.txt
-echo "IPv6     : [off]"  | tee -a log-install.txt
-echo ""  | tee -a log-install.txt
-echo "Log Installasi --> /root/log-install.txt"  | tee -a log-install.txt
-echo ""  | tee -a log-install.txt
-echo "SILAHKAN REBOOT VPS ANDA"  | tee -a log-install.txt
-echo ""  | tee -a log-install.txt
-echo "==============================================="  | tee -a log-install.txt
