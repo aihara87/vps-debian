@@ -22,11 +22,6 @@ apt-get install chkconfig -y
 # install wget and curl
 apt-get update;apt-get -y install wget curl;
 
-# install webmin
-apt-get install perl libnet-ssleay-perl openssl libauthen-pam-perl libpam-runtime libio-pty-perl apt-show-versions python -y
-apt-get install apt-transport-https -y
-apt-get install webmin -y
-
 # set time GMT +7
 ln -fs /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
 
