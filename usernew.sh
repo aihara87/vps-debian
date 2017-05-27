@@ -1,4 +1,5 @@
 #!/bin/bash
+#Script Auto Create User SSH By Ozikhacker. Powered by Fawzya.Net
 read -p "Username : " Login
 read -p "Password : " Pass
 read -p "Expired (hari): " mumetndase
@@ -14,5 +15,5 @@ echo -e "Port     : 443 (Dropbear)"
 echo -e "Username : $Login"
 echo -e "Password : $Pass"
 echo -e "----------------------------"
-echo -e "-->Aktif Sampai: $exp "<--
+echo -e "-->Aktif Sampai: $exp <--"
 echo -e "==========================="
